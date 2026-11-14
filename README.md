@@ -1,381 +1,172 @@
-# Gpt — AI Conversational Chat Application
+# DevCompass — AI Technical & IT Learning Hub
 
-A full-stack AI chatbot built with **React, Node.js, Express, MongoDB, and Google Gemini**.  
-The application provides a ChatGPT-style conversational experience with authentication, persistent chat history, Markdown/code rendering, and backend security controls.
+A full-stack AI research and technical learning platform built with **React, Node.js, Express, MongoDB Atlas, Google Gemini, Tavily Search API, and YouTube Data API v3**.
 
-> **Project:** Gpt  
-> **Author:** Shuvam  
-> **AI:** Google Gemini API
+DevCompass functions as an interactive developer research companion: ask any technical or Computer Science topic, and receive a comprehensive overview, key architectural concepts, live verified documentation, interactive YouTube video tutorials, Indian tech market salary insights, an interactive 4-option quiz, and a phased step-by-step learning roadmap.
+
+> **Project:** DevCompass  
+> **Author:** Asmit  
+> **Stack:** React (Vite) · Node.js (Express) · MongoDB Atlas · Google Gemini · Tavily Search API · YouTube Data API v3
 
 ---
 
 ## ✨ Features
 
-### 🤖 AI Chat
-- Conversational chat powered by Google Gemini
-- Multi-turn conversation memory
-- Persistent conversations stored in MongoDB
-- New chat creation
-- Loading state and response animation
-- Stop generating / request cancellation
-- User-friendly error handling
+### 🧭 Intelligent Research & Query Intent Routing
+* **Case 1: Follow-up Questions** (*"explain React more simply"*, *"difference between X and Y"*)
+  * Reuses conversation context without re-searching.
+  * Fast generation with relevant follow-up suggestion chips.
+* **Case 2: New Topics & Resource Queries** (*"what is mern"*, *"show me videos on Docker"*)
+  * Concurrently queries **Tavily Search API** (authoritative documentation) and **YouTube Data API v3** (curated tutorial videos).
+  * Synthesizes live market salary trends from AmbitionBox, Glassdoor, and industry reports.
+  * Formats modular DevCompass research cards.
+* **Case 3: Non-Tech / Off-Topic Queries** (*"how do I cook pasta"*)
+  * Fast, polite refusal: *"I'm built for tech and IT learning. Want to explore a topic like React, Python, or databases instead?"* with quick-start technical suggestions.
 
-### 📝 Rich Responses
-- Markdown rendering
-- GitHub-Flavored Markdown (GFM)
-- Tables and strikethrough
-- Syntax-highlighted code blocks
-- Copy-code button
-- Language labels for code blocks
+---
 
-### 🔐 Authentication & Security
-- User registration and login
-- Password hashing with `bcrypt`
-- JWT-based authentication
-- JWT validation on application startup
-- Automatic logout for invalid/expired tokens
-- Protected chat and thread APIs
-- Per-user thread ownership
-- Cross-user thread access protection
-- Input validation and message length limits
-- Login/register rate limiting
-- Chat rate limiting
-- CORS restriction for the frontend origin
-- Environment variables for secrets
-- Password hashes are never returned to the frontend
+### 🎨 Modular DevCompass Research Cards
+* **Overview Card**: Detailed breakdown of what the technology is, its architecture, and its real-world purpose, accompanied by technology badges.
+* **Key Concepts Card**: 5–6 architectural points covering data flow, prerequisites, gotchas, and production best practices.
+* **Videos Card**: Curated tutorial videos with thumbnails and direct links to YouTube. Videos do **not** autoplay on load; clicking any video mounts the embedded YouTube player directly in place with a close button.
+* **Docs & Articles Card**: 4–6 live, verified documentation links with domain badges (`react.dev ↗`, `nodejs.org ↗`, `mongodb.com ↗`).
+* **Roles & Salary (India) Card**:
+  * Role mapping (e.g. *Frontend Developer · Full-Stack Developer · Backend Engineer*).
+  * 3 salary tier cards: **Fresher (0–2 yrs)**, **Mid-level (2–5 yrs)**, and **Senior (5+ yrs)** with realistic LPA ranges.
+* **Interactive 4-Option Quiz (`A, B, C, D`)**:
+  * Practice questions with all 4 options selectable.
+  * Instant feedback with green/red badges and explanations.
 
-### 💬 Chat Management
-- Chat history sidebar
-- Rename conversations
-- Delete conversations with confirmation
-- User profile information
-- Logout
+---
+
+### 🗺️ Multi-Tab Sidebar & Learning Roadmaps
+* **🧭 New Topic**: Starts a fresh research thread.
+* **3 Segmented Tabs**:
+  * **Chats**: Full persistent conversation history with in-place rename and delete actions.
+  * **Roadmaps**: Complete phased learning roadmaps (*Foundations ➔ Core Frameworks ➔ Backend & APIs ➔ Production & Deployment ➔ Advanced & Cloud*) plus capstone project ideas.
+  * **Summary**: Concise recap of the active chat (*Key Points Learned*, *Resources Mentioned*, and *Next Steps*).
+* **Mouse-Stretchable Sidebar**: Click and drag the right edge of the sidebar horizontally to expand or shrink the view (260px to 750px), with preferences saved in `localStorage`.
+
+---
+
+### ⚙️ User Experience & Security
+* **Instant Message Rendering**: Prompts appear in the chat stream immediately when sent, followed by a typing indicator and a "Stop generating" button.
+* **Difficulty Level Selector**: Toggle between **Beginner**, **Intermediate**, and **Advanced** to tailor explanation depth.
+* **Authentication**: Secure JWT-based authentication with bcrypt password hashing and token persistence.
+* **Rate Limiting**: Protection against brute-force logins and chat spamming via `express-rate-limit`.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- React
-- Vite
-- React Markdown
-- Remark GFM
-- Rehype Highlight
-- Highlight.js
-- React Spinners
-- UUID
-
-### Backend
-- Node.js
-- Express
-- MongoDB
-- Mongoose
-- Google Gemini API (`@google/genai`)
-- JWT (`jsonwebtoken`)
-- bcrypt
-- express-rate-limit
-- CORS
-- dotenv
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React 19, Vite, ReactMarkdown, remark-gfm, rehype-highlight, FontAwesome |
+| **Backend** | Node.js (ES Modules), Express 5, Mongoose, JWT, bcrypt, cors, dotenv |
+| **Database** | MongoDB Atlas (Cloud Cluster) |
+| **AI & APIs** | Google Gemini (`gemini-3.6-flash` with automatic fallback), Tavily Search API, YouTube Data API v3 |
+| **Deployment** | Vercel (Frontend), Render (Backend) |
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
 ```text
-Gpt/
+gpt-ai-chatbot-main/
 ├── Backend/
 │   ├── middleware/
-│   │   └── auth.js
+│   │   └── auth.js             # JWT authentication middleware
 │   ├── models/
-│   │   ├── Thread.js
-│   │   └── User.js
+│   │   ├── Thread.js           # Thread, Message, Summary & Roadmap schema
+│   │   └── User.js             # User credentials schema
 │   ├── routes/
-│   │   ├── auth.js
-│   │   └── chat.js
+│   │   ├── auth.js             # Register, login & profile endpoints
+│   │   └── chat.js             # Chat, summary & roadmap endpoints
 │   ├── utils/
-│   │   └── gemini.js
-│   ├── .env.example
-│   ├── .gitignore
+│   │   ├── gemini.js           # Gemini response generation, quiz & fallback
+│   │   └── research.js         # Tavily web/salary search & YouTube fetcher
+│   ├── .env                    # Backend environment variables
 │   ├── package.json
-│   └── server.js
-│
+│   └── server.js               # Express server entry point
 ├── Frontend/
 │   ├── src/
-│   │   ├── App.jsx
-│   │   ├── Auth.jsx
-│   │   ├── Chat.jsx
-│   │   ├── ChatWindow.jsx
-│   │   ├── MyContext.jsx
-│   │   ├── Sidebar.jsx
-│   │   └── ...
-│   ├── .env.example
-│   ├── package.json
-│   └── vite.config.js
-│
+│   │   ├── App.jsx             # Main application container & state provider
+│   │   ├── Auth.jsx            # Authentication form (login/register)
+│   │   ├── Chat.jsx            # DevCompass research cards, quiz & hero UI
+│   │   ├── ChatWindow.jsx      # Navbar, level selector & chat input bar
+│   │   ├── Sidebar.jsx         # 3-tab sidebar (Chats, Roadmaps, Summary) & resizer
+│   │   └── MyContext.jsx       # Context definitions
+│   ├── vercel.json             # Vercel SPA client rewrite configuration
+│   ├── .env                    # Frontend environment variables
+│   └── package.json
 └── README.md
 ```
 
 ---
 
-## ⚙️ Prerequisites
+## 🚀 Getting Started
 
-Install the following before running the project:
+### 1. Prerequisites
+* Node.js v18+ installed
+* MongoDB Atlas account or local MongoDB instance
+* API Keys for:
+  * Google Gemini API Key
+  * Tavily Search API Key
+  * YouTube Data API v3 Key
 
-- Node.js 18+
-- npm
-- Docker Desktop
-- A Google Gemini API key
+### 2. Environment Variables
 
----
-
-## 🚀 Installation
-
-### 1. Clone the repository
-
-```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-cd Gpt
-```
-
-### 2. Start MongoDB
-
-The project can use a dedicated Docker MongoDB container on port `27018`, keeping the default MongoDB port `27017` available for other projects.
-
-```bash
-docker run -d --name GPT-mongo -p 27018:27017 -v GPT-mongo-data:/data/db mongo:8
-```
-
-If the container already exists:
-
-```bash
-docker start GPT-mongo
-```
-
-### 3. Configure the backend
-
-Go to the backend:
-
-```bash
-cd Backend
-npm install
-```
-
-Create:
-
-```text
-Backend/.env
-```
-
-using `Backend/.env.example` as a template.
-
-Example:
-
+#### Backend (`Backend/.env`)
 ```env
 PORT=8081
-MONGODB_URI=mongodb://localhost:27018/sigmagpt
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
 GEMINI_API_KEY=your_gemini_api_key
-JWT_SECRET=your_random_secret
+TAVILY_API_KEY=your_tavily_api_key
+YOUTUBE_API_KEY=your_youtube_api_key
+CLIENT_URL=http://localhost:5173
 ```
 
-**Never commit the real `.env` file or your API key/JWT secret.**
-
-### 4. Start the backend
-
-From `Backend`:
-
-```bash
-npx nodemon server.js
-```
-
-The backend should run on:
-
-```text
-http://localhost:8081
-```
-
-### 5. Configure the frontend
-
-Open another terminal:
-
-```bash
-cd Frontend
-npm install
-```
-
-Create:
-
-```text
-Frontend/.env
-```
-
-using `Frontend/.env.example`:
-
+#### Frontend (`Frontend/.env`)
 ```env
 VITE_API_URL=http://localhost:8081
 ```
 
-### 6. Start the frontend
+### 3. Installation & Local Development
 
-```bash
-npm run dev
-```
+1. **Install Backend Dependencies**:
+   ```bash
+   cd Backend
+   npm install
+   npm run dev
+   ```
+   *Backend runs on `http://localhost:8081`.*
 
-Open the Vite URL shown in the terminal, normally:
-
-```text
-http://localhost:5173
-```
-
----
-
-## 🔑 Environment Variables
-
-### Backend
-
-| Variable | Description |
-|---|---|
-| `PORT` | Backend server port |
-| `MONGODB_URI` | MongoDB connection string |
-| `GEMINI_API_KEY` | Google Gemini API key |
-| `JWT_SECRET` | Secret used to sign and verify JWTs |
-
-### Frontend
-
-| Variable | Description |
-|---|---|
-| `VITE_API_URL` | Base URL of the backend API |
+2. **Install Frontend Dependencies**:
+   ```bash
+   cd ../Frontend
+   npm install
+   npm run dev
+   ```
+   *Frontend runs on `http://localhost:5173`.*
 
 ---
 
-## 🔌 API Overview
+## ☁️ Deployment
 
-### Authentication
+### Backend to Render
+1. Create a **Web Service** on [Render](https://render.com/).
+2. Point to the repository with **Root Directory**: `Backend`.
+3. Build Command: `npm install` | Start Command: `npm start`.
+4. Add all environment variables (`MONGODB_URI`, `JWT_SECRET`, `GEMINI_API_KEY`, `TAVILY_API_KEY`, `YOUTUBE_API_KEY`, `CLIENT_URL=*`).
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/auth/register` | Create a user account |
-| `POST` | `/api/auth/login` | Log in |
-| `GET` | `/api/auth/me` | Get the authenticated user |
-
-### Chat & Threads
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/chat` | Send a message to Gemini |
-| `GET` | `/api/thread` | Get the current user's threads |
-| `GET` | `/api/thread/:threadId` | Get messages for a thread |
-| `PATCH` | `/api/thread/:threadId` | Rename a thread |
-| `DELETE` | `/api/thread/:threadId` | Delete a thread |
-
-Protected endpoints require:
-
-```http
-Authorization: Bearer <JWT>
-```
+### Frontend to Vercel
+1. Create a new project on [Vercel](https://vercel.com/) and import the repository.
+2. Set **Root Directory** to `Frontend` (Framework preset: `Vite`).
+3. Add Environment Variable: `VITE_API_URL` pointing to your deployed Render URL (e.g. `https://devcompass-backend.onrender.com`).
+4. Click **Deploy**.
 
 ---
 
-## 🧠 Conversation Flow
-
-```text
-User
-  │
-  ▼
-React Frontend
-  │
-  │ JWT + message
-  ▼
-Express API
-  │
-  ├── Authentication / authorization
-  ├── Input validation
-  ├── Rate limiting
-  │
-  ▼
-MongoDB
-  │
-  │ Conversation history
-  ▼
-Gemini API
-  │
-  ▼
-Assistant response
-  │
-  ▼
-MongoDB + React UI
-```
-
-The complete thread history is supplied to Gemini so the assistant can maintain context throughout a conversation.
-
----
-
-## 🔒 Security Notes
-
-This project includes several application-level security measures:
-
-- Passwords are hashed before database storage.
-- JWTs protect authenticated API routes.
-- Thread queries include the authenticated user's ID.
-- Users cannot rename, read, or delete another user's thread through the protected routes.
-- Authentication and chat endpoints are rate-limited.
-- Request input is validated and length-limited.
-- Internal server errors are logged server-side while generic messages are returned to clients.
-- Secrets are stored in environment variables rather than source code.
-- CORS is restricted to the local frontend origin during development.
-
-For production deployment, additional hardening should be considered, including HTTPS, secure cookie-based authentication where appropriate, production CORS configuration, stronger operational logging/monitoring, and deployment-specific secret management.
-
----
-
-## 🧪 Recommended Test Flow
-
-After starting the application:
-
-1. Register a new account.
-2. Log in.
-3. Send a chat message.
-4. Ask a follow-up question to verify conversation memory.
-5. Refresh the page and verify chat history remains.
-6. Create a new chat.
-7. Rename a conversation.
-8. Delete a conversation and confirm the dialog.
-9. Log out.
-10. Log in again.
-11. Verify protected endpoints reject requests without a valid JWT.
-
----
-
-
-
-## 📌 Future Improvements
-
-Possible future enhancements include:
-
-- Production deployment
-- Secure HttpOnly cookie authentication
-- Streaming Gemini responses
-- Chat search
-- Regenerate response
-- Responsive mobile sidebar
-- Theme customization
-- File/image uploads
-- Voice input
-- Usage/account settings
-
----
-
-## 👨‍💻 Author
-
-**Shuvam**
-
-Built as a full-stack AI chatbot project to demonstrate:
-
-- React development
-- REST API development
-- Authentication and authorization
-- MongoDB data modeling
-- Third-party AI API integration
-- Backend security
-- Modern frontend UX
-
----
+## 📄 License
+This project is licensed under the MIT License.

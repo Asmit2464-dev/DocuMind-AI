@@ -13,6 +13,10 @@ function App() {
   const [prevChats, setPrevChats] = useState([]);
   const [newChat, setNewChat] = useState(true);
   const [allThreads, setAllThreads] = useState([]);
+  const [level, setLevel] = useState("Beginner"); // "Beginner" | "Intermediate" | "Advanced"
+  const [activeTab, setActiveTab] = useState("chats"); // "chats" | "roadmaps" | "summary"
+  const [threadRoadmap, setThreadRoadmap] = useState("");
+  const [threadSummary, setThreadSummary] = useState("");
 
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
@@ -24,6 +28,8 @@ function App() {
 
   const [authLoading, setAuthLoading] = useState(true);
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -32,7 +38,7 @@ function App() {
         return;
     }
 
-    fetch("http://localhost:8081/api/auth/me", {
+    fetch(`${API_URL}/api/auth/me`, {
         headers: {
             "Authorization": `Bearer ${token}`
         }
@@ -68,6 +74,25 @@ function App() {
     setUser(null);
   };
 
+  const handleMakeRoadmap = async () => {
+    setActiveTab("roadmaps");
+    try {
+        const response = await fetch(`${API_URL}/api/thread/${currThreadId}/roadmap`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            setThreadRoadmap(data.roadmap || "");
+        }
+    } catch (err) {
+        console.error("Failed to generate roadmap:", err);
+    }
+  };
+
   const providerValues = {
     prompt, setPrompt,
     reply, setReply,
@@ -75,13 +100,18 @@ function App() {
     newChat, setNewChat,
     prevChats, setPrevChats,
     allThreads, setAllThreads,
+    level, setLevel,
+    activeTab, setActiveTab,
+    threadRoadmap, setThreadRoadmap,
+    threadSummary, setThreadSummary,
+    handleMakeRoadmap,
     user,
     handleLogout
   };
 
   if (authLoading) {
-    return <div>Loading...</div>;
-}
+    return <div style={{ color: "#fff", display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
+  }
 
   if (!user) {
     return <Auth onLogin={handleLogin} />;

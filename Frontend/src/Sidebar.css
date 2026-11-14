@@ -1,122 +1,165 @@
 .sidebar {
-    background-color: #171717;
-    color: #b4b4b4;
+    background-color: #0e1015;
+    color: #94a3b8;
     height: 100vh;
-    width: 320px;
+    min-width: 250px;
+    max-width: 750px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    box-sizing: border-box;
 }
 
-
-.sidebar > button {
+/* New Topic Button */
+.newTopicBtn {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: transparent;
-    border: solid 0.5px rgba(255, 255, 255, 0.5);
+    gap: 10px;
+    margin: 14px 12px 10px 12px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background-color: #171b24;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     cursor: pointer;
+    color: #f1f5f9;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.logo {
-    height: 25px;
-    width: 25px;
-    background-color: #fff;
-    border-radius: 50%;
-    object-fit: cover;
+.newTopicBtn:hover {
+    background-color: #202532;
+    border-color: rgba(56, 189, 248, 0.35);
 }
 
-button span {
-    font-size: 20px;
+.newTopicIcon {
+    font-size: 15px;
+    color: #38bdf8;
 }
 
-button:hover {
-    background-color: rgba(180, 180, 180, 0.05);
+/* 3 Tabs: Chats | Roadmaps | Summary */
+.sidebarTabsContainer {
+    display: flex;
+    gap: 4px;
+    margin: 0 12px 12px 12px;
+    background: #13161d;
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.tabSegment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #8892b0;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tabSegment:hover {
+    color: #f1f5f9;
+}
+
+.tabSegmentActive {
+    background: #202532;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Sidebar Content Area */
+.sidebarContent {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Thread History */
 .history {
-    margin: 10px;
-    padding: 10px;
+    margin: 0 12px;
+    padding: 0;
     height: 100%;
 }
 
 .history li {
     list-style-type: none;
     cursor: pointer;
-    padding: 2px 5px;
-    margin-bottom: 0.3rem;
-    font-size: 14px;
-    border: solid 10px transparent;
+    padding: 8px 12px;
+    margin-bottom: 0.25rem;
+    font-size: 13.5px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
     position: relative;
+    color: #94a3b8;
+    transition: all 0.15s ease;
 }
 
 .history li:hover {
-    background-color: rgba(180, 180, 180, 0.05);
-    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #f1f5f9;
 }
 
-.sign {
-    padding: 10px;
-    margin: 10px;
-    font-size: 14px;
-    text-align: center;
-    border-top: solid 0.25px rgba(255, 255, 255, 0.5);
-}
-
-.fa-trash {
-    opacity: 0;
-    position: absolute;
-    right: 0;
-    z-index: 2;
-}
-
-.history li:hover .fa-trash {
-    opacity: 1;
-    color: #fff;
-}
-
-.fa-trash:hover {
-    color: #f87171 !important;
-}
-
-.highlighted {
-    background-color: rgba(180, 180, 180, 0.05);
-    border-radius: 10px;
+.history li.highlighted {
+    background-color: rgba(14, 165, 233, 0.12);
+    color: #38bdf8;
+    font-weight: 500;
 }
 
 .threadTitle {
     display: block;
-    width: calc(100% - 55px);
+    width: calc(100% - 50px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .renameInput {
-    width: 190px;
-    padding: 5px 7px;
-    border: 1px solid #777;
-    border-radius: 5px;
+    width: 170px;
+    padding: 4px 6px;
+    border: 1px solid #38bdf8;
+    border-radius: 4px;
     outline: none;
-    background: #252525;
+    background: #1e2330;
     color: #fff;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .renameIcon,
+.trashIcon,
 .renameSave {
     opacity: 0;
     position: absolute;
-    right: 28px;
     cursor: pointer;
-    color: #b4b4b4;
     z-index: 2;
+    transition: opacity 0.2s ease;
+}
+
+.renameIcon {
+    right: 32px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.trashIcon {
+    right: 12px;
+    color: #94a3b8;
+    font-size: 12px;
 }
 
 .history li:hover .renameIcon,
+.history li:hover .trashIcon,
 .history li:hover .renameSave {
     opacity: 1;
 }
@@ -125,14 +168,200 @@ button:hover {
     color: #fff;
 }
 
-.renameSave {
-    color: #86efac;
+.trashIcon:hover {
+    color: #f87171 !important;
 }
 
-.renameSave:hover {
+.renameSave {
+    right: 12px;
     color: #4ade80;
 }
 
-.history li:hover .fa-trash {
-    right: 0;
+/* Tab View Panel (Roadmaps / Summary) */
+.tabViewPanel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 12px 12px 12px;
+    box-sizing: border-box;
+}
+
+.tabViewHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 4px 10px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.panelHeading {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.panelHeading i {
+    color: #38bdf8;
+}
+
+.copyBtn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #94a3b8;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.copyBtn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+}
+
+.tabViewBody {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 4px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #cbd5e1;
+}
+
+.panelLoading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 180px;
+    text-align: center;
+    color: #8892b0;
+    gap: 10px;
+}
+
+.panelLoading i {
+    font-size: 22px;
+    color: #38bdf8;
+}
+
+.panelEmptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    text-align: center;
+    color: #64748b;
+    gap: 10px;
+    padding: 0 10px;
+}
+
+.emptyIcon {
+    font-size: 26px;
+    color: #38bdf8;
+    opacity: 0.7;
+}
+
+.renderedMarkdown h1,
+.renderedMarkdown h2,
+.renderedMarkdown h3,
+.renderedMarkdown h4 {
+    color: #38bdf8;
+    font-size: 13.5px;
+    margin: 12px 0 6px 0;
+    font-weight: 600;
+}
+
+.renderedMarkdown ul,
+.renderedMarkdown ol {
+    padding-left: 16px;
+    margin: 4px 0 10px 0;
+}
+
+.renderedMarkdown li {
+    margin-bottom: 4px;
+}
+
+.renderedMarkdown strong {
+    color: #f1f5f9;
+}
+
+.primaryActionBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #0ea5e9;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 8px;
+}
+
+.primaryActionBtn:hover:not(:disabled) {
+    background: #0284c7;
+}
+
+.primaryActionBtn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Footer */
+.sign {
+    padding: 12px;
+    margin: 0 12px;
+    font-size: 12px;
+    text-align: center;
+    color: #64748b;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sign p {
+    margin: 0;
+}
+
+/* Mouse Resizer Handle */
+.sidebarResizer {
+    position: absolute;
+    top: 0;
+    right: -4px;
+    width: 8px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.sidebarResizer:hover,
+.sidebar.resizing .sidebarResizer {
+    background: rgba(14, 165, 233, 0.35);
+}
+
+.resizerGrip {
+    width: 2px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.sidebarResizer:hover .resizerGrip,
+.sidebar.resizing .resizerGrip {
+    background: #38bdf8;
+    height: 48px;
 }

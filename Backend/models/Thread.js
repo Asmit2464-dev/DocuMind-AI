@@ -10,6 +10,10 @@ const MessageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    meta: {
+        type: mongoose.Schema.Types.Mixed,
+        default: null
+    },
     timestamp: {
         type: Date,
         default: Date.now
@@ -32,6 +36,16 @@ const ThreadSchema = new mongoose.Schema({
     title: {
         type: String,
         default: "New Chat"
+    },
+
+    summary: {
+        type: String,
+        default: ""
+    },
+
+    roadmap: {
+        type: String,
+        default: ""
     },
 
     messages: [MessageSchema],
